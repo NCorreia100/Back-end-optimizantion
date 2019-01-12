@@ -5,10 +5,11 @@
 //import db connection and schema
 
 const { MongoClient } = require('mongodb');
+const {AWS_URL} = require('../config');
 
 //declare const vars
 
-const TARGET_RECORDS = 2000000 //10M change this value to generate that number of records
+const TARGET_RECORDS = 5000000 //10M change this value to generate that number of records
 const BATCH_QTY = 10;         //change this to divide the total number of records to batches of equal size
 const timeInit = Date.now();
 
@@ -36,7 +37,7 @@ const generateListing = (id) => {
   }`;
 };
 
-let batchNum = 1;
+let batchNum = 0;
 //create a batch of listings
 const getWritingOps = (num) => {
   let counter = 0;
@@ -51,7 +52,7 @@ const getWritingOps = (num) => {
   }
   console.log('batch in #:', batchNum, ' is ready! Time: ', Math.round(Date.now() - timeInit))
   batchNum++;
-  return batch.map(doc=>({'insertOne':doc}));
+  return batch.map(doc=>({'insertOne':{_id:batchNum,doc}}));
 }
 
 
@@ -67,16 +68,16 @@ const insertDocuments = (db, callback) => {
     });
     counter++;
   }
-}
+  }
 
-
+ 
 const connectionPArams = {
   useNewUrlParser: true,
   fsync: false,
   w: 0,
   j: false,
   bufferMaxEntries: -1,
-  poolSize: BATCH_QTY
+  poolSize: BATCH_QTY  
 }
 
 
@@ -85,7 +86,9 @@ const connectionPArams = {
 
 let outputBatch = 1;
 
-MongoClient.connect('mongodb://localhost:27017', connectionPArams, (err, client) => {
+MongoClient.connect(
+  `mongodb://${AWS_URL}:27017`, 
+  connectionPArams, (err, client) => {
   if (err) console.log('error connecting to DB')
 
   const db = client.db('listingImages');
