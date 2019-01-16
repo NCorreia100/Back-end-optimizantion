@@ -21,7 +21,8 @@ module.exports.getCarouselImages = (listingId, callback) => {
                     console.log('doc requested: ', targetDoc);                    
                     let randomNum = parseInt(targetDoc.substring(11,13));                   
                     if(isNaN(randomNum)){
-                        randomNum = parseInt(targetDoc.substring(11,12));                    }                    
+                        randomNum = parseInt(targetDoc.substring(11,12)); 
+                    }                    
                     console.log('index: ',randomNum);
                     let URLs = {};                                                           
                     for (let i in URLsFile) {
