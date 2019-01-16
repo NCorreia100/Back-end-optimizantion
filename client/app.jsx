@@ -22,14 +22,13 @@ class Carousel extends React.Component {
     let listingNumber = window.location.pathname.slice('/').split('/')[1];
     // Make call to API with listingNumber
     fetch(`../api/carousel/${listingNumber}`)
+      .then(data => data.json())
       .then(data => {
-        return data.json();
-      })
-      .then(json => {
-        let newState = json;
-        newState.photos.push(json.floorPlan);
-        newState.photos.push(json.map);
-        this.setState(newState);
+        let photos = [];
+        for(let i in data){
+          photos.push(data[i])
+        }
+        this.setState({photos});
       });
   }
 

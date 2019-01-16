@@ -17,8 +17,6 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const compression = require('compression');
 
-// Import API Key
-const { MAPBOX_API_KEY } = require('../config.js');
 
 const app = express();
 
@@ -43,26 +41,15 @@ app.use('/', express.static(path.join(__dirname, '../public')));
 app.get('/api/carousel/:id', (req, res) => {
   const id = req.params.id;
 
-  db.getById(id)
-    .then(result => {
-      // If nothing is found, respond with 404
-      if (result === null) return res.sendStatus(404);
-
-      // The database adds some extra, private properties to each entry.
-      // Explicity mapping the result of the database fetch is one way to filter
-      // the served json.
-      res.json({
-        id: result.id,
-        photos: result.photos,
-        floorPlan: result.floorPlan,
-        // Concatinate mapbox url with API key here
-        map: result.map + MAPBOX_API_KEY
-      });
-    })
-    .catch(err => {
-      console.log('Error running db.getById:', err);
-      res.sendStatus(500);
-    });
+  db.getCarouselImages(id,(err,output)=>{
+    // If nothing is found, respond with 404
+    if (err) return res.sendStatus(404);
+    else if(id<1||id>1000){
+      res.sendStatus(407);
+    }else{
+      res.json(output);
+    }
+  })    
 });
 
 ////////////////////
