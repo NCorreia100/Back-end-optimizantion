@@ -42,13 +42,12 @@ app.get('/api/carousel/:id', (req, res) => {
   const id = req.params.id;
 
   db.getCarouselImages(id,(err,output)=>{
-    // If nothing is found, respond with 404
-    if (err) return res.sendStatus(404);
-    else if(id<1||id>1000){
-      res.sendStatus(407);
-    }else{
-      res.json(output);
+    if(id<1||id>10000000){
+      res.sendStatus(407).json("Param not accepted")
     }
+    // If nothing is found, respond with 404
+    if (err) res.sendStatus(404);
+    else     res.json(output);    
   })    
 });
 

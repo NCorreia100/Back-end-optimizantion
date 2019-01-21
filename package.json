@@ -10,7 +10,8 @@
     "start-dev": "(mongod > /dev/null & ) && (nodemon server/ server/index.js)",
     "start": "(mongod > /dev/null & ) && (node server/index.js)",
     "build-dev": "webpack -d --watch",
-    "build": "webpack -p"
+    "build": "webpack -p",
+	"deploy":"node server/index.js"
   },
   "repository": {
     "type": "git",

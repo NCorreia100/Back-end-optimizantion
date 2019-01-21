@@ -11,3 +11,9 @@ public/bundle.js
 
 # API Keys
 config.js
+
+# Docker
+dockerfile
+
+# Artillery
+artillery.yaml

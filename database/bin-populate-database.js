@@ -9,7 +9,7 @@ const {connectionStr,connectionParams,dbName,colName} = require('./config');
 
 //dclare const va
 
-const TARGET_RECORDS = 5000000 //10M change this value to generate that number of records
+const TARGET_RECORDS = 10000000 //10M change this value to generate that number of records
 const BATCH_QTY = 10;         //change this to divide the total number of records to batches of equal size
 const timeInit = Date.now();
 
@@ -36,9 +36,9 @@ const getWritingOps = (num) => {
     } while(counter%1000!==0);    
     batch.push(docStr);
   }
-  console.log('batch in #:', batchNum, ' is ready! Time: ', Math.round(Date.now() - timeInit))
+  console.log('batch in: #'+ batchNum+ ' ready! | Time: '+ Math.round(Date.now() - timeInit)+ ' | Records Qty: '+counter)
   batchNum++;
-  return batch.map(doc=>({'insertOne':{'bundle':doc}}));
+  return batch.map(doc=>({'insertOne':{'_id':batchNum-1,'bundle':doc}}));
 }
 
 
