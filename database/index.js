@@ -12,7 +12,7 @@ module.exports.getCarouselImages = (listingId, callback) => {
             const db = client.db(dbName);
             const collection = db.collection(colName);
 
-            let batchId = Math.floor(listingId/1000000);
+            let batchId = Math.floor(listingId/1000000+1);
             let batchListing = listingId%1000000;
             console.log('Batch: #'+batchId+'; Record on batch: #'+batchListing);
 
@@ -28,7 +28,8 @@ module.exports.getCarouselImages = (listingId, callback) => {
                     for (let i in URLsFile) {
                         if(i==='map')   URLs[i] = URLsFile[i][randomNum]+MAPBOX_TOKEN;
                         else            URLs[i] = URLsFile[i][randomNum] || null;
-                    }                   
+                    }
+                   
                     callback(null, URLs);
                 }
             })
