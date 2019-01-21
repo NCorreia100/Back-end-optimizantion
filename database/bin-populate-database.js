@@ -23,7 +23,8 @@ const generateListing = () => {
   return `"{'index':'${Math.floor(Math.random()*17)}'}"`;
 };
 
-let batchNum = 1;
+let batchNum = 0;
+let batchCounter =1;
 //create a batch of listings
 const getWritingOps = (num) => {
   let counter = 0;
@@ -34,11 +35,12 @@ const getWritingOps = (num) => {
       docStr+=generateListing(counter)+'~';
       counter++;     
     } while(counter%1000!==0);    
-    batch.push(docStr);
-  }
-  console.log('batch in: #'+ batchNum+ ' ready! | Time: '+ Math.round(Date.now() - timeInit)+ ' | Records Qty: '+counter)
   batchNum++;
-  return batch.map(doc=>({'insertOne':{'_id':batchNum-1,'bundle':doc}}));
+    batch.push({"batchId":batchNum,bundle:docStr});
+  }
+  console.log('batch in: #'+ batchCounter+ ' ready! | Time: '+ Math.round(Date.now() - timeInit)+ ' | Batch id: '+batchNum)
+  batchCounter++;
+  return batch.map(doc=>({'insertOne':doc}));
 }
 
 

@@ -4,22 +4,24 @@ const URLsFile = require('../database/sample-data/sampleData.json');
 const {connectionStr,connectionParams,dbName,colName} = require('./config');
 
 
-module.exports.getCarouselImages = (listingId, callback) => {
-    console.log('listing requested: ',listingId);
+module.exports.getCarouselImages = (listing, callback) => {
+    console.log('listing requested: ',listing);
+    let listingId = listing-1;
     MongoClient.connect(connectionStr,connectionParams, (err, client) => {
             if (err) console.log('error connecting to DB')
 
             const db = client.db(dbName);
             const collection = db.collection(colName);
 
-            let batchId = Math.floor(listingId/1000000+1);
-            let batchListing = listingId%1000000;
-            console.log('Batch: #'+batchId+'; Record on batch: #'+batchListing);
+            let batchId = Math.floor(listingId/1000)+1;
+            let batchListing = listingId%1000;
+            console.log('Batch: #'+batchId+'; Batch index '+batchListing);
 
-            collection.findOne({'_id':batchId}, (err, data) => {
+            collection.findOne({'batchId':batchId}, (err, data) => {
                 if (err) callback(err)
                 else {                    
-                    let targetDoc = data.bundle.split('~')[batchListing];                             
+                    let targetDoc = data.bundle.split('~')[batchListing];
+                    console.log('target doc: ',targetDoc)                             
                     let randomNum = parseInt(targetDoc.substring(11,13));                   
                     if(isNaN(randomNum)){
                         randomNum = parseInt(targetDoc.substring(11,12)); 
@@ -28,8 +30,7 @@ module.exports.getCarouselImages = (listingId, callback) => {
                     for (let i in URLsFile) {
                         if(i==='map')   URLs[i] = URLsFile[i][randomNum]+MAPBOX_TOKEN;
                         else            URLs[i] = URLsFile[i][randomNum] || null;
-                    }
-                   
+                    }                   
                     callback(null, URLs);
                 }
             })
