@@ -57,4 +57,5 @@ class Carousel extends React.Component {
   }
 }
 
-ReactDOM.render(<Carousel />, document.getElementById('carousel-container'));
+// ReactDOM.render(<Carousel />, document.getElementById('carousel-container'));
+export default Carousel;
