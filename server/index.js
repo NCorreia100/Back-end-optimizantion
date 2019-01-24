@@ -16,18 +16,17 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const path = require('path');
 const compression = require('compression');
-
-//import server-side-rendering dependencies
 const React = require('react');
 const { renderToString } = require('react-dom/server');
-const { hydrate } = require('react-dom');
 
-//import components
+//import component
 const Carousel = require('../client/app.jsx').default;
-
 
 // Import Database Connection
 const db = require('../database/index.js');
+
+//import new relic performance analyzer
+require('newrelic');
 
 //instantiate server
 const app = express();
@@ -35,7 +34,7 @@ const app = express();
 // Apply middleware
 app.use(morgan('dev'));
 app.use(bodyParser.json());
-// app.use(compression());
+app.use(compression());
 
 ////////////////////
 //  Serve Routes

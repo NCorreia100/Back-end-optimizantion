@@ -17,3 +17,6 @@ dockerfile
 
 # Artillery
 artillery.yaml
+
+#new relic
+newrelic.js
