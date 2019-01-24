@@ -9,7 +9,7 @@ class Carousel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      photos: [],
+      photos: this.props.carouselPhotos,
       showModal: false,
       modalToggleImage: null
     };
@@ -18,19 +18,20 @@ class Carousel extends React.Component {
     this.modalToggleOff = this.modalToggleOff.bind(this);
   }
 
-  componentDidMount() {
-    let listingNumber = window.location.pathname.slice('/').split('/')[1];
-    // Make call to API with listingNumber
-    fetch(`../api/carousel/${listingNumber}`)
-      .then(data => data.json())
-      .then(data => {
-        let photos = [];
-        for(let i in data){
-          photos.push(data[i])
-        }
-        this.setState({photos});
-      });
-  }
+  // componentDidMount() {
+  //   let listingNumber = window.location.pathname.slice('/').split('/')[1];
+  //   // Make call to API with listingNumber
+  //   fetch(`/carousel/photos/${listingNumber}`)
+  //     .then(data => data.json())
+  //     .then(data => {
+  //       console.log(data);
+  //       let photos = [];
+  //       for(let i in data){
+  //         photos.push(data[i])
+  //       }
+  //       this.setState({photos});
+  //     });
+  // }
 
   modalToggleOn(selectedImageIndex) {
     this.setState({
@@ -58,4 +59,5 @@ class Carousel extends React.Component {
 }
 
 // ReactDOM.render(<Carousel />, document.getElementById('carousel-container'));
+
 export default Carousel;

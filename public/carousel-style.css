@@ -256,7 +256,7 @@
   line-height: 20px;
   padding: 10px 16px 10px 34px;
   display: inline-block;
-  background: no-repeat url(/assets/images/floorplan-icon.svg);
+  background: no-repeat url(/carousel/static/assets/images/floorplan-icon.svg);
   background-position: 18px 13px;
 }
 
@@ -345,7 +345,7 @@
 }
 
 .modal-floor-plan-button {
-  background: url(/assets/images/floorplan-icon-modal.png) -4px 1px/52px no-repeat;
+  background: url(/carousel/static/assets/images/floorplan-icon-modal.png) -4px 1px/52px no-repeat;
 }
 
 
@@ -442,7 +442,7 @@
     width: 40%;
     height: 90px;
     margin: 10px;
-    background: url(/assets/images/floorplan-button-background.jpg);
+    background: url(/carousel/static/assets/images/floorplan-button-background.jpg);
   }
 
   .button-text {

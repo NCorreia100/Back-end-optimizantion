@@ -105,8 +105,9 @@ class MainCarousel extends React.Component {
               transitionLeaveTimeout={500}
             >
               {this.state.mainImages.reverse().map((e, i) => {
+                i++;
                 return (
-                  <li key={e.key} className="main-image-list-item">
+                  <li key={i.toString()} className="main-image-list-item">
                     <img src={e.url} className="main-image" />
                   </li>
                 );
@@ -126,28 +127,28 @@ class MainCarousel extends React.Component {
         </div>
 
         <div className="carousel-thumb-container">
-          <ul
-            className="thumb-list"
-            style={{ left: this.state.thumbnailXShift }}
-          >
-            {!this.props.photos
-              ? null
-              : this.props.photos.slice(0, -2).map((e, i) => {
-                  return (
-                    <li className="thumb-item" key={i}>
-                      <img
-                        className={
-                          i === this.state.selected
-                            ? 'thumb-image thumb-selected'
-                            : 'thumb-image'
-                        }
-                        src={e}
-                        onClick={this.selectByClick}
-                        data-thumb-id={i}
-                      />
-                    </li>
-                  );
-                })}
+          <ul className="thumb-list" style={{ left: this.state.thumbnailXShift }} >
+            {
+              this.props.photos.length?
+              this.props.photos.slice(0, -2).map((e,i) => {
+                i++;
+                return (
+                  <li className="thumb-item" key={i}>
+                    <img className={
+                        i === this.state.selected ?
+                         'thumb-image thumb-selected'
+                          : 'thumb-image'
+                      }
+                       src={e}
+                      onClick={this.selectByClick}
+                      data-thumb-id={i.toString()}
+                    />
+                  </li>
+                );
+              })
+            :   null
+          }
+          }
           </ul>
 
           <div className="carousel-counter">
