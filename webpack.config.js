@@ -2,9 +2,9 @@
 var nodeExternals = require('webpack-node-externals');
 
 var path = require('path');
-var SRC_DIR = path.join(__dirname, './client');
-var SERVER_DIR = path.join(__dirname, './server');
-var DIST_DIR = path.join(__dirname, '/public');
+var SRC_DIR = path.join(__dirname, 'client');
+var SERVER_DIR = path.join(__dirname, 'server');
+var DIST_DIR = path.join(__dirname, 'public');
 
 module.exports = [{ 
   mode: 'development',
@@ -20,7 +20,10 @@ module.exports = [{
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader'
+          loader: 'babel-loader',
+          query: {
+            presets: ['@babel/preset-env','@babel/preset-react']            
+          }          
         }
       }
     ]
@@ -44,7 +47,10 @@ module.exports = [{
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader'
+          loader: 'babel-loader',
+          query: {
+            presets: ['@babel/preset-env','@babel/preset-react']            
+          }          
         }
       }
     ]

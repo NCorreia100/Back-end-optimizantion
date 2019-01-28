@@ -1,3 +1,4 @@
 *.git
 *.md
 node_module
+newrelic.js

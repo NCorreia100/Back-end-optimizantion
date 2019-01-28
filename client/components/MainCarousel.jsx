@@ -107,8 +107,8 @@ class MainCarousel extends React.Component {
               {this.state.mainImages.reverse().map((e, i) => {
                 i++;
                 return (
-                  <li key={i.toString()} className="main-image-list-item">
-                    <img src={e.url} className="main-image" />
+                  <li key={i} className="main-image-list-item">
+                    <img async src={e.url} className="main-image"  />
                   </li>
                 );
               })}
@@ -134,15 +134,15 @@ class MainCarousel extends React.Component {
                 i++;
                 return (
                   <li className="thumb-item" key={i}>
-                    <img className={
+                    <img async className={
                         i === this.state.selected ?
                          'thumb-image thumb-selected'
                           : 'thumb-image'
                       }
                        src={e}
                       onClick={this.selectByClick}
-                      data-thumb-id={i.toString()}
-                    />
+                      data-thumb-id={i}
+                     />
                   </li>
                 );
               })
@@ -170,11 +170,11 @@ class MainCarousel extends React.Component {
             </div>
 
             <div className="map-button">
-              <img
+              <img async
                 src={this.props.map ? this.props.map : null}
                 data-thumb-id={this.props.photos.length - 1}
                 onClick={this.selectByClick}
-              />
+              async />
             </div>
           </div>
         </div>
