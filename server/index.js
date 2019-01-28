@@ -17,22 +17,19 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const compression = require('compression');
 
+require('newrelic');
+
 //import server-side-rendering dependencies
 const React = require('react');
-const { renderToString,renderToNodeStream } = require('react-dom/server');
+const {renderToNodeStream } = require('react-dom/server');
 
 
-//import components
+//import components & database driver
 const Carousel = require('../client/app.jsx').default;
-
-
-// Import Database Connection
 const db = require('../database/index.js');
 
-//instantiate server
+//instantiate server & apply middleware
 const app = express();
-
-// Apply middleware
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(compression());
@@ -42,7 +39,6 @@ app.use(compression());
 
   // Static Files
   app.use('/carousel/static/', express.static(path.resolve(__dirname, '../public')));
-
 
   //serve html on SSR
 app.get('/:id(\\d+)/', (req, res) => {
@@ -60,8 +56,6 @@ app.get('/:id(\\d+)/', (req, res) => {
       stream.pipe(res, { end: 'false' })
       stream.on('end', () => res.end(getFinalHtml()))       
       }
-
-
   });
 });
 
@@ -125,10 +119,8 @@ var getInitialHtml = function(){
     <body>
     <div id="carousel-container">`
   }
-  
-  
-  
-  //html after the component
+      
+  //html after the components
   var getFinalHtml = function(){
     return ` 
     </div>   
