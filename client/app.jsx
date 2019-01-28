@@ -73,7 +73,7 @@ class Carousel extends React.Component {
               <ul className="thumb-list"> </ul>
               <div className="button-container">
                 <div className="floor-plan-button">
-                  <span clclassNameass="button-text" >Floor Plan</span>
+                  <span className="button-text" >Floor Plan</span>
                 </div>
                 <div className="map-button">
                 </div>

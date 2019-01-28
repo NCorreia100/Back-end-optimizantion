@@ -21,3 +21,4 @@ artillery.yaml
 
 #new relic
 newrelic.js
+newrelic_agent.log

@@ -80,10 +80,13 @@ app.get('/carousel/photos/:id', (req, res) => {
     if (listingId < 1 || listingId > 10000000) {
       res.sendStatus(405)
     }    
-  
+     
     getComponentWithProps(listingId, (err, stream) => {
       if (err) console.log('error getting Carousel component: ', err);
-      else stream.pipe(res)    
+      console.log('stream:', stream);
+      stream.pipe(res)
+      stream.on('end',res.end('done'))
+       
     });
 
   }); 
