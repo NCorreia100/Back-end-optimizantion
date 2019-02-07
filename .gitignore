@@ -1,10 +1,12 @@
 ## MAC files ##
 .DS_Store
 
-## NPM ##
-npm
-npm-debug.log
+#external modules
 node_modules/
+
+#logs & docs
+npm-debug.log
+newrelic_agent.log
 
 # Compiled Dirs
 bundle.js
@@ -14,11 +16,12 @@ bundle-server.js
 config.js
 
 # Docker
-dockerfile
+
+# newrelic
 
 # Artillery
 artillery.yaml
 
-#new relic
-newrelic.js
-newrelic_agent.log
+
+
+

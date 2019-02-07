@@ -4,32 +4,28 @@
   "description": "Image Carousel Component for StreetEasy Style Item Listing Page",
   "main": "./server/index.js",
   "scripts": {
+    "mongod": "cd /home/ec2-user/ & mkdir mongoData & mongod --dbpath ./mongoData --logpath ./mongoData/dbLogs.log",
+    "build": "webpack -p",
+    "start": "node public/bundle-server.js",
+    "build-dev": "webpack -d --watch" ,   
+    "start-dev": "nodemon public/bundle-server.js",
     "test-client": "jest",
     "test-server": "mocha ./server/server.test.js",
-    "test-database": "mocha ./database/database.test.js",
-    "start-dev": "(mongod > /dev/null & ) && (nodemon server/ server/index.js)",
-    "start": "(mongod > /dev/null & ) && (node server/index.js)",
-    "build-dev": "webpack -d --watch",
-    "build": "webpack -p",
-    "deploy": "node server/index.js"
+    "test-database": "mocha ./database/database.test.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Team-Elysium/image-carousel-component.git"
+    "url": "git+https://github.com/HackberryPie/image-carousel-component.git"
   },
   "author": "Jared Ellison (back-end optimization by Nuno Correia)",
-  "license": "UNLICENSED",
-  "bugs": {
-    "url": "https://github.com/Team-Elysium/image-carousel-component/issues"
-  },
-  "homepage": "https://github.com/Team-Elysium/image-carousel-component#readme",
+  "license": "UNLICENSED",   
+  "homepage": "http://ec2-3-17-192-112.us-east-2.compute.amazonaws.com",
   "devDependencies": {
     "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.0.0",
-    "@babel/preset-es2015": "^7.0.0-beta.53",
-    "@babel/preset-react": "^7.0.0",
-    "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.0.4",
+    "babel-core": "^7.0.0-bridge.0",
+    "@babel/preset-env": "^7.0.0",    
+    "@babel/preset-react": "^7.0.0",
     "babel-plugin-dynamic-import-node": "^2.2.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
@@ -63,8 +59,7 @@
     "mongodb": "^3.1.10",
     "mongoose": "^5.4.0",
     "morgan": "^1.9.1",
-    "path": "^0.12.7",
-    "pg": "^7.8.0",
+    "path": "^0.12.7",   
     "react": "^16.7.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^16.7.0",

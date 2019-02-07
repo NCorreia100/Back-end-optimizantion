@@ -1,4 +1,7 @@
-//this file uses the img-url and stores a bin of the image
+/////++this file uses the img-url and stores a bin of the image++//////
+
+////++discontinued++////
+
 const fetch = require('node-fetch');
 const Buffer = require('buffer/').Buffer
 const fs = require('fs');
@@ -55,7 +58,7 @@ const getImgFromURL = (fileToSave,key, token = "") => {
 
 let roomtype = "exterior"  //change this manually
     getImgFromURL(roomtype+'.json',apartmentUrls[roomtype])
-    ///ERASE COMA AT END OF ARRAY MANUALLY
+
 
 
 

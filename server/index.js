@@ -1,55 +1,59 @@
-////////////////////////////////////////////////////////////
-//
-//    Express Server
 
-////////////////////////////////////////
-//  Configuration Constants
 
+///////+++Express Server+++////////
+
+//[DEV ONLY] import new relic module for reporting
+//require('newrelic');
+
+//environment configs
 const PORT = process.env.PORT || 3010;
 
 
-/////////////////////////////////////////
-//  Import dependencies
 
+//Import dependencies
+//
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const path = require('path');
 const compression = require('compression');
 
-require('newrelic');
-
-//import server-side-rendering dependencies
+//server-side-rendering dependencies
 const React = require('react');
 const {renderToNodeStream } = require('react-dom/server');
 
-
-//import components & database driver
+//components & database driver
 const Carousel = require('../client/app.jsx').default;
 const db = require('../database/index.js');
 
 //instantiate server & apply middleware
+//
 const app = express();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(compression());
 
-////////////////////
+
 //  Serve Routes
+//
 
-  // Static Files
-  app.use('/carousel/static/', express.static(path.resolve(__dirname, '../public')));
+//set default directory to server static files
+app.use('/carousel/static/', express.static(path.resolve(__dirname, '../public')));
 
-  //serve html on SSR
+//[NOT FOR PROXY] serve html on SSR
 app.get('/:id(\\d+)/', (req, res) => {
   console.log('ID:::', req.params)
+
+  //validate request
   let listingId = req.params.id;
   if (listingId < 1 || listingId > 10000000) {
-    res.sendStatus(405)
+    res.sendStatus(407)
   }
   
+  //send async response in multiple blocks using a stream
   res.write(getInitialHtml());
 
+  //get react components
   getComponentWithProps(listingId, (err, stream) => {
     if (err) console.log('error getting Carousel component: ', err);
     else {
@@ -59,7 +63,7 @@ app.get('/:id(\\d+)/', (req, res) => {
   });
 });
 
-// serve the photos ----not used in SSR
+//[NOT USED IN SSR] serve the photos 
 app.get('/carousel/photos/:id', (req, res) => {
   const listingId = req.params.id;
   if (listingId < 1 || listingId > 10000000) {
@@ -73,41 +77,45 @@ app.get('/carousel/photos/:id', (req, res) => {
 });
 
 
-  //send the Carousel component to the proxy
+  //{PROXY REQUESTS] send the Carousel component to the proxy
   app.get('/:id(\\d+)/', (req, res) => {
     console.log('ID:::', req.params)
     let listingId = req.params.id;
-    if (listingId < 1 || listingId > 10000000) {
-      res.sendStatus(405)
-    }    
-     
+
+    //validation now done on the proxy
+    // if (listingId < 1 || listingId > 10000000) {
+    //   res.sendStatus(407)
+    // }    
+    
+    //get react components
     getComponentWithProps(listingId, (err, stream) => {
-      if (err) console.log('error getting Carousel component: ', err);
-      console.log('stream:', stream);
+      if (err) console.log('error getting Carousel component: ', err);     
       stream.pipe(res)
-      stream.on('end',res.end('done'))
-       
+      stream.on('end',res.end('done'))       
     });
 
   }); 
 
-////////////////////
+
 //  Export server for testing
 // export default app;
 
-//get the html content of the body
+//get the body html markup
 var getComponentWithProps = function (listingId, callback) {
 
+  //get prop data from database
   db.getCarouselImages(listingId, (err, URLs) => {
     if (err) callback(err);
     else {
+      //interpolate component with data into HTML body and return it
       callback(null,renderToNodeStream(<Carousel carouselPhotos={Object.values(URLs)} />));
     }
   })
 };
 
    
- //html before the carousel component is attached
+ //HTML before the component are attached on SSR
+ //
 var getInitialHtml = function(){       
     return `
     <!DOCTYPE html>
@@ -123,7 +131,8 @@ var getInitialHtml = function(){
     <div id="carousel-container">`
   }
       
-  //html after the components
+  //HTML after the components are attached on SSR
+  //
   var getFinalHtml = function(){
     return ` 
     </div>   
@@ -132,9 +141,8 @@ var getInitialHtml = function(){
   </html>`
 }
 
-  ////////////////////
-  //  Run Server
   
+  //Initiate request event handler  
   app.listen(PORT, (err, data) => {
     if (err) return console.log('Error starting server:', err);
     console.log(`Successfully started server on http://localhost:${PORT}`);
