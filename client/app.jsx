@@ -53,7 +53,7 @@ getPHotos(){
 
         //Update state with photos
         console.log('updating state')
-        this.setState({photos:reveicedPhotos},()=>console.log('updated state'));
+        this.setState({photos:reveicedPhotos});
       });
     }
 }
