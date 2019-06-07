@@ -6,14 +6,18 @@ import ReactDOM from 'react-dom';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import axios from 'axios';
 import MainCarousel from './components/MainCarousel.jsx';
-import ModalCarousel from './components/ModalCarousel.jsx'
+import ModalCarousel from './components/ModalCarousel.jsx';
+// import hydration from './hydrationModule';
+import {SERVER_PORT} from '../config';
+import fetch from 'node-fetch';
 
 class Carousel extends React.Component {
+
   constructor(props) {
     super(props);
-    console.log('gettgin static props', this.props)
+    
     this.state = {
-      photos: this.props.carouselPhotos || null,
+      photos:  null,
       showModal: false,
       modalToggleImage: null
     };
@@ -21,30 +25,41 @@ class Carousel extends React.Component {
     this.modalToggleOn = this.modalToggleOn.bind(this);
     this.modalToggleOff = this.modalToggleOff.bind(this);
   }
+getPHotos(){
+  console.log('component will mount')
+  
+  // this.setState({photos: hydration.rehidrate()})
+    //Get state props if not present
+    if(!this.state.photos){ 
 
+    //Get listing Id from address bar and escape it
+    let listingNumber;
+    if(typeof window!=='undefined'){
+     listingNumber = JSON.stringify(window.location.pathname.slice('/').split('/')[1]);
+     console.log(';isting number:',listingNumber)
+    }else{
+      listingNumber=1;
+    }
+    
+    //Make API request with listing ID as params
+   return fetch(`http://127.0.0.1:${SERVER_PORT}/carousel/photos/${listingNumber}`)
+      .then(data => data.json())
+      .then(data => {
+        console.log('photos data:',data);
+        let reveicedPhotos = [];
+        for(let i in data){
+          reveicedPhotos.push(data[i])
+        }
+
+        //Update state with photos
+        console.log('updating state')
+        this.setState({photos:reveicedPhotos},()=>console.log('updated state'));
+      });
+    }
+}
   componentDidMount() {
-    console.log('ComponentDidMount...\nEvent handler hooks not working because of passing down props prior to SSR')
-
-  //   //Get state props if not present
-  //   if(this.state.photos.length==0){ 
-
-  //   //Get listing Id from address bar and escape it
-  //   let listingNumber = JSON.stringify(window.location.pathname.slice('/').split('/')[1]);
-
-  //   //Make API request with listing ID as params
-  //   fetch(`/carousel/photos/${listingNumber}`)
-  //     .then(data => data.json())
-  //     .then(data => {
-  //       console.log(data);
-  //       let photos = [];
-  //       for(let i in data){
-  //         photos.push(data[i])
-  //       }
-
-  //       //Update state with photos
-  //       this.setState({photos},()=>console.log(state updated));
-  //     });
-  //   }
+    //not invoked on SSR
+    
   }
 
   modalToggleOn(selectedImageIndex) {
@@ -63,10 +78,10 @@ class Carousel extends React.Component {
   }
 
   render() {
-
-    //don't render anything if state hasn't been updated
-    if (this.state.photos === null) return null
-    else {
+    
+   return this.getPHotos().then(()=>{
+       
+    
       return (
         <React.Fragment>
           <MainCarousel photos={this.state.photos} map={this.state.map} modalToggleOn={this.modalToggleOn} />
@@ -95,8 +110,11 @@ class Carousel extends React.Component {
 
 
         </React.Fragment>
-      );
-    }
+      )
+   
+   
+      })
+  
   }
 }
 
@@ -105,7 +123,7 @@ class Carousel extends React.Component {
 //
 if (typeof window !== 'undefined') {
   //hydrate places the event handler hooks onto the page, however it doesn't work because it doesn't expect state to contain props
-  ReactDOM.hydrate(<Carousel />, document.getElementById('carousel-container'), console.log('hydration triggered A:', JSON.stringify(document.getElementById('carousel-container'))));
+  ReactDOM.hydrate(<Carousel />, document.getElementById('carousel-container'));
 }
 
 export default Carousel;

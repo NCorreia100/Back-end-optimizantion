@@ -4,7 +4,7 @@
 //
 const { MongoClient } = require('mongodb');
 const { MAPBOX_TOKEN } = require('../config');
-const URLsFile = require('../database/sample-data/sampleData.json');
+const URLsFile = require('../database/sample-data/mockData.json');
 const { connectionStr, connectionParams, dbName, colName } = require('./config');
 
 //Retrieve photo-URLs from database

@@ -22,6 +22,9 @@ config.js
 # Artillery
 artillery.yaml
 
+#package-lock
+package-lock.json
+
 
 
 

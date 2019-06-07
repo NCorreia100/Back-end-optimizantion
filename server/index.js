@@ -6,7 +6,7 @@
 //require('newrelic');
 
 //environment configs
-const PORT = process.env.PORT || 3010;
+const PORT = process.env.PORT || require('../config').SERVER_PORT;
 
 
 
@@ -22,9 +22,11 @@ const compression = require('compression');
 const React = require('react');
 const {renderToNodeStream } = require('react-dom/server');
 
+
 //components & database driver
 const Carousel = require('../client/app.jsx').default;
 const db = require('../database/index.js');
+const hydration = require('../client/hydrationModule').default;
 
 //instantiate server & apply middleware
 //
@@ -108,13 +110,15 @@ var getComponentWithProps = function (listingId, callback) {
     if (err) callback(err);
     else {
       //interpolate component with data into HTML body and return it
-      callback(null,renderToNodeStream(<Carousel carouselPhotos={Object.values(URLs)} />));
+      hydration.dehidrate(Object.values(URLs));
+
+      callback(null,renderToNodeStream(<Carousel />));
     }
   })
 };
 
    
- //HTML before the component are attached on SSR
+ //HTML before the react components are attached on SSR
  //
 var getInitialHtml = function(){       
     return `
