@@ -20,7 +20,7 @@ config.js
 # newrelic
 
 # Artillery
-artillery.yaml
+
 
 #package-lock
 package-lock.json
