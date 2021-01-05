@@ -51,7 +51,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "body-parser": "^1.18.3",
     "buffer": "^5.2.1",
     "compression": "^1.7.3",
