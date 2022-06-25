@@ -40,7 +40,7 @@
     "mocha": "^5.2.0",
     "newrelic": "^5.2.0",
     "nightwatch": "^1.0.18",
-    "node-fetch": "^2.3.0",
+    "node-fetch": "^2.6.7",
     "prettier": "^1.15.3",
     "react-test-renderer": "^16.7.0",
     "request-promise-native": "^1.0.5",
